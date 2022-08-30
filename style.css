@@ -1,0 +1,37 @@
+body {
+  font-family: "Montserrat", sans-serif;
+}
+
+.board-grid {
+  background-color: aqua;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
+  width: 100%;
+  padding: 1em 0 1em 0;
+  margin-bottom: 0;
+  justify-content: center;
+}
+
+.wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 60%;
+  margin: auto;
+  border: 1px solid lightgrey;
+  border-radius: 10px;
+}
+
+.field {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 600;
+  font-size: 54px;
+  color: #12232e;
+  border: none;
+  border-radius: 0px;
+  border-bottom: 3px solid #203647;
+  border-right: 3px solid #203647;
+  outline: none;
+}
