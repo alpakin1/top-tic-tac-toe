@@ -1,93 +1,77 @@
 const boardGrid = document.getElementById('board-grid')
-const button = document.querySelector('button')
 
-// const Game = () => {
-//     const board = Board()
-//     board.renderBoardHtml
-//     const initialize = () => {
-//         // render start game button
-//     }
+const Player = (name, marker, turn) => {
 
-//     const start = () => {
-//         // render empty board
-//         // create players (call factory)
-//         // add event listeners
-//     }
-//     return {
-//         initialize,
-//         start
-//     }
-// }
-
-// const game = Game()
-
-// const game = (() => {
-//     const board = Board()
-//     board.renderBoardHtml
-//     const initialize = () => {
-//         // render start game button
-//     }
-
-//     const start = () => {
-//         // render empty board
-//         // create players (call factory)
-//         // add event listeners
-//     }
-//     return {
-//         initialize,
-//         start
-//     }
-// }
-// )();
-
-let spaces = ["x", "o", "x", "o", "x", "o", "x", "o", "x"]
-
-const Player = (sign) => {
-    let signAssign = () => {
-        let count = 0;
-        return () => {
-            if (count % 2 == 0) {
-                sign = 'X'
-            } else if (count % 2 !== 0) {
-                sign = 'O'
-            }
-            count++;
-        }   
-    }
     return {
-        signAssign
+        name, marker, turn
     }
 }
 
-const Board = (() => {
-    const renderBoardHtml = () => {
-        for (let i = 0; i < spaces.length; i++) {
-            if (spaces[i] == "") {
-                let grid = document.createElement('button')
-                grid.classList.add('field')
-                boardGrid.appendChild(grid)
-            } else if (spaces[i] == "x") {
-                let grid = document.createElement('button')
-                grid.classList.add('field')
-                grid.innerText = 'X';
-                boardGrid.appendChild(grid)
-            } else if (spaces[i] == "o") {
-                let grid = document.createElement('button')
-                grid.classList.add('field')
-                grid.innerText = 'O';
-                boardGrid.appendChild(grid)
-            }
+const playerOne = Player('alp', 'x', true)
+const playerTwo = Player('not alp', 'o', false)
+
+const gameBoard = (() => {
+    let turnCount = 0
+    let board = Array(9)
+    const winningComps = [
+        [0,1,2],
+        [3,4,5],
+        [6,7,8],
+        [0,3,6],
+        [1,4,7],
+        [2,5,8],
+        [0,4,8],
+        [2,4,6]
+    ]
+
+    function winCheck () {
+        let xMoves = [];
+        let oMoves = [];
+        for(let i = 0; i < board.length; i++){
+            if(board[i] == 'x') {
+                xMoves.push(board[i])
+                console.log(xMoves)
+            } else if(board[i] == 'o') {
+                oMoves.push(board[i])
+                console.log(oMoves)
+            } else return
         }
-    }
-    const boardClick = () => {
+        for(let i = 0; i < winningComps.length; i++) {
+            if(winningComps[i] == xMoves){
+                document.getElementById('wrapper').innerText = 'Player One Wins';
+            } else if(winningComps[i] == oMoves){
+                document.getElementById('wrapper').innerText = 'Player One Wins';
+            } else return
+        }
+    } 
 
+    const turnUpdate = () => {
+        turnCount++;
     }
+    const playerTurn = () => {
+        const field = document.querySelectorAll('.field')
+        field.forEach(field => {   
+            field.addEventListener('click', e => {
+                const currentPlayer = playerOne.turn ? playerOne : playerTwo
+                const otherPlayer = !playerOne.turn ? playerOne : playerTwo
+                if(e.target.textContent == '') {
+                    board[e.target.id] = currentPlayer.marker;
+                    field.textContent = currentPlayer.marker;
+                    currentPlayer.turn = false
+                    otherPlayer.turn = true
+                    winCheck()
+                }
+            })})
+        }
     return {
-        renderBoardHtml, boardClick
+        turnCount, turnUpdate, board, playerTurn, winningComps, winCheck
     }
-
 })();
 
-Board.renderBoardHtml();
+gameBoard.playerTurn()
 
-const playerOne = Player('x')
+
+const Game = (() => {
+        
+})()
+
